@@ -42,6 +42,20 @@ class ImageFXDownloader:
 
             self.driver = webdriver.Chrome(options=chrome_options)
             print(f"✅ Chrome 브라우저 연결 성공 (포트: {self.debug_port})")
+
+            # 창 크기 최대화 (반응형 레이아웃 대응)
+            try:
+                self.driver.maximize_window()
+                print("✅ 브라우저 창 최대화 완료")
+            except Exception as window_error:
+                print(f"⚠️ 창 최대화 실패 (계속 진행): {window_error}")
+                # 최대화 실패 시 최소 크기 설정 시도
+                try:
+                    self.driver.set_window_size(1920, 1080)
+                    print("✅ 브라우저 창 크기 설정 (1920x1080)")
+                except:
+                    print("⚠️ 현재 창 크기로 계속 진행")
+
             return True
         except Exception as e:
             print(f"❌ Chrome 브라우저 연결 실패: {e}")
